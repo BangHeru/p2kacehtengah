@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+    <!-- <div class="carousel-inner kepala">
+        <h2>Monitoring Kegiatan DAK dan DOKA Tahun 2019</h2>
+    </div> -->
+    <div class="carousel-inner">
+        <div class="item active d-flex align-items-center justify-content-center min-vh-100">
+            <div class="slideshow"></div>
+            <div class="carousel-caption text-left uraian"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var interval = 5000;
+
+    var slideshow = document.querySelector(".slideshow");
+    var keterangan = document.querySelector(".carousel-caption");
+    var count = 0;
+    var foto1=[];
+    var foto2=[];
+    var foto3=[];
+    var foto4=[];
+    let paket = [];
+    let opd = [];
+    let dana = [];
+    let tahun = [];
+    let fisik = [];
+    let keuangan = [];
+    let tgl_monitoring = [];
+    
+    {% for obj in dokumentasi %}
+        foto1.push("{{ obj.foto1.url }}");
+        foto2.push("{{ obj.foto2.url }}");
+        foto3.push("{{ obj.foto3.url }}");
+        foto4.push("{{ obj.foto4.url }}");
+
+        paket.push("{{ obj.nama_paket }}");
+        opd.push("{{ obj.nama_paket.nama_opd }}");
+        dana.push("{{ obj.nama_paket.dana }}");
+        tahun.push("{{ obj.nama_paket.tahun_anggaran }}");
+        fisik.push("{{ obj.persen_fisik }}");
+        keuangan.push("{{ obj.persen_keuangan }}");
+        tgl_monitoring.push("{{ obj.tanggal_monitoring|date:"d F Y" }}");
+        // console.log("{{ obj.nama_paket.nama_opd.kepala_opd}}");
+    {% endfor %}
+   
+
+    var limit = foto1.length-1;
+    // console.log(limit);
+
+    var pkt = "";
+    var dna = "";
+    var thn = "";
+    var tgl = "";
+    var fsk = "";
+    var keu = "";
+    var dns = "";
+
+    
+
+    window.addEventListener("load", () => {
+
+        setInterval( () => {
+            
+
+            if(count == limit){
+                count = 0;
+            }
+            else{
+                count++;
+            }
+
+            pkt = paket[count];
+            dna = dana[count];
+            thn = tahun[count];
+            tgl = tgl_monitoring[count];
+            fsk =  fisik[count];
+            keu = keuangan[count];
+            dns = opd[count];
+            fto = [foto1[count], foto2[count], foto3[count], foto4[count]]
+            
+            muatGambar();
+
+        }, interval * 4);
+
+        
+        function muatGambar() {
+
+            var i = 0;
+            setInterval( () => {
+            
+
+            slideshow.style.backgroundImage=`url(${fto[i]})`;
+                console.log(i);
+            
+                if( i == 3){
+                i = 0;
+            }
+            else{
+                i++;
+            }
+
+            keterangan.style.backgroundColor = "black";
+            keterangan.style.borderRadius = "4px";
+            keterangan.style.boxShadow = "0 14px 28px rgba(0, 0, 0, 25),0 10px 10px rgba(0, 0, 0, 22)";
+
+
+            keterangan.innerHTML = `<h4>
+                Tanggal Monitoring ${tgl} <br>
+                Progress Fisik ${fsk}% Progress Keuangan ${keu}%
+                <hr>
+                ${pkt} <br>
+                Sumber dana ${dna} Tahun Anggaran ${thn} <br>
+                ${dns} <br>
+            </h4>`;
+
+
+        }, interval);
+        }
+        
+
+    })
+
+
+
+</script>
+
+<style>
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.slideshow{
+    width: 1200px;
+    height: 750px;
+    background-image: url('/media/3.JPG');
+    background-position: center;
+    background-size: cover;
+    transition: 1s ease-in;
+    border-radius: 4px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 25),
+                0 10px 10px rgba(0, 0, 0, 22);
+}
+
+.uraian  {
+    opacity: 0.6;
+    justify-content: left;
+    padding: 10px;
+    }
+
+.uraian h4 {
+    color:yellow;
+}
+
+.kepala h2 {
+    color:yellow;
+}
+</style>
+
+{% endblock %}

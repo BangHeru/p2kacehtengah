@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Monitoring Kegiatan DAK Tahun 2019</h2>  
+  <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+    <div class="carousel-inner">
+        {% for obj in dokumentasi %}
+          {% if forloop.counter == 1 %}
+            <div class="item active d-flex align-items-center justify-content-center min-vh-100">
+                <img class="d-block w-100" src="{{ obj.foto.url }}" alt="{{ obj.keterangan }}" >
+                <div class="container">
+                    <div class="carousel-caption text-left">
+                      <h3>{{ obj.keterangan }}</h3>
+                    </div>
+                </div>
+            </div>
+          {% else %}
+            <div class="item d-flex align-items-center justify-content-center min-vh-100">
+                <img class="d-block w-100" src="{{ obj.foto.url }}" alt="{{ obj.keterangan }}" >
+                <div class="container">
+                    <div class="carousel-caption text-left">
+                      <h3>{{ obj.keterangan }}</h3>
+                    </div>
+                </div>
+            </div>
+          {% endif %}
+      {% endfor %}
+
+
+
+
+     
+
+{% endblock %}
